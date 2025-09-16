@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnBuscar = document.getElementById('btnBuscar');
   const inputBuscar = document.getElementById('inputBuscar');
   const lista = document.getElementById('lista');
+  const alertaTexto = document.getElementById('alertaTexto');
+  alertaTexto.hidden = true;
 
   fetch('https://japceibal.github.io/japflix_api/movies-data.json')
     .then(res => res.json())
@@ -10,7 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnBuscar.addEventListener('click', function () {
     let criterio = inputBuscar.value.toLowerCase();
-    if (criterio.length === 0) return;
+    if (criterio.trim().length === 0) {
+      alertaTexto.hidden = false;
+      return;
+    }
+    alertaTexto.hidden = true;
     let palabras = criterio.split(/\s+/);
 
     lista.innerHTML = '';
