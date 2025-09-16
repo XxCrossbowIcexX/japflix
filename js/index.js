@@ -11,13 +11,20 @@ document.addEventListener("DOMContentLoaded", function () {
   btnBuscar.addEventListener('click', function () {
     let criterio = inputBuscar.value.toLowerCase();
     if (criterio.length === 0) return;
+    let palabras = criterio.split(/\s+/);
+
     lista.innerHTML = '';
-    let peliculasFiltradas = arrayPelis.filter(pelicula =>
-      pelicula.title.toLowerCase().includes(criterio) ||
-      pelicula.genres.some(gr => gr.name.toLowerCase().includes(criterio)) ||
-      pelicula.tagline.toLowerCase().includes(criterio) ||
-      pelicula.overview.toLowerCase().includes(criterio)
-    );
+
+    let peliculasFiltradas = arrayPelis.filter(pelicula => {
+      let texto = [
+        pelicula.title,
+        pelicula.tagline || '',
+        pelicula.overview || '',
+        pelicula.genres.map(gr => gr.name).join(' ')
+      ].join(' ').toLowerCase();
+
+      return palabras.every(palabra => texto.includes(palabra));
+    });
 
     peliculasFiltradas.forEach(pelicula => {
       let li = document.createElement('li');
